@@ -62,7 +62,7 @@ export const siteConfig = {
     email: "", // 例如 "you@example.com"
     linkedin: "", // 例如 "https://www.linkedin.com/in/you"
     twitter: "", // 例如 "https://x.com/you"
-    github: "https://github.com/yourname", // 你的 GitHub 主页（发布前替换）
+    github: "https://github.com/Mralai", // 你的 GitHub 主页
   },
 
   // ---------------- 关于我（每个元素是一段） ----------------
@@ -91,7 +91,7 @@ export const siteConfig = {
       description:
         "你现在看到的这个网站：基于开源模板 DevPortfolio（Astro + Tailwind CSS，MIT 协议）深度定制 —— 深色科技风、中文排版优化、单文件内容配置、内置下载中心，GitHub Actions 自动发布。",
       skills: ["Astro", "Tailwind CSS", "TypeScript", "GitHub Actions"],
-      github: "https://github.com/yourname/portfolio",
+      github: "https://github.com/Mralai/Mralai.github.io",
     },
     {
       name: "示例作品 · 终端工具箱 terminal-toolkit",
