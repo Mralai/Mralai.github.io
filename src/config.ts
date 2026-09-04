@@ -1,6 +1,7 @@
 /**
  * ==================================================================
- *  站点内容配置 —— 全站所有文字 / 作品 / 下载 / 经历都在这个文件里改
+ *  站点内容配置 —— 全站文字都在这个文件里改
+ *  3D 轮播作品列表请编辑独立的 src/data/works.ts
  *  改完保存并推送 GitHub，Actions 会自动重新构建发布
  * ==================================================================
  */
@@ -11,30 +12,6 @@
  */
 const pubBase = import.meta.env.BASE_URL;
 
-export interface ProjectItem {
-  name: string;
-  description: string;
-  skills: string[];
-  /** GitHub 仓库地址（显示「源码」按钮） */
-  github?: string;
-  /** 在线体验地址（显示「在线体验」按钮） */
-  demo?: string;
-  /** 直接下载地址（显示「下载 xx」按钮）；大文件请用 GitHub Releases */
-  download?: string;
-  /** true = 卡片上标注「示例数据」 */
-  isDemo?: boolean;
-}
-
-export interface DownloadItem {
-  name: string;
-  version: string;
-  platform: string;
-  size: string;
-  url: string;
-  desc: string;
-  isDemo?: boolean;
-}
-
 export const siteConfig = {
   // ---------------- 基本资料 ----------------
   /** 网站署名：页头 Logo / Hero / 页脚 */
@@ -44,16 +21,14 @@ export const siteConfig = {
   /** 站点简介（浏览器标签 / SEO） */
   description:
     "游戏来 的个人网站 —— 程序员作品展示、开源源码与软件免费下载。",
-  /** Hero 口号（一段话即可） */
-  heroTagline: "用代码把想法变成可以运行的产品 —— 这里是作品集与下载站。",
 
   /** 主题强调色：全站统一（十六进制） */
   accentColor: "#38bdf8",
 
   /**
    * 示例数据开关
-   * demoMode = true 时：页面展示「示例数据」占位内容，便于对照填写。
-   * 把你的真实信息填好之后，把这里改成 false 即可。
+   * demoMode = true 时：作品卡片标注「示例」徽标。
+   * 填好真实信息后把这里改成 false 即可。
    */
   demoMode: true,
 
@@ -71,45 +46,7 @@ export const siteConfig = {
     "这段文字目前是「示例数据」：在下方段落里填写你的真实介绍，可写多段，每段一个元素。",
   ],
 
-  // ---------------- 技术栈标签 ----------------
-  skills: [
-    "JavaScript / TypeScript",
-    "Node.js",
-    "Python",
-    "React",
-    "Vue",
-    "HTML / CSS",
-    "Git",
-    "Docker",
-    "Linux",
-  ],
-
-  // ---------------- 作品集（isDemo: true 会标注「示例数据」） ----------------
-  projects: [
-    {
-      name: "本站：深色科技风个人作品站",
-      description:
-        "你现在看到的这个网站：基于开源模板 DevPortfolio（Astro + Tailwind CSS，MIT 协议）深度定制 —— 深色科技风、中文排版优化、单文件内容配置、内置下载中心，GitHub Actions 自动发布。",
-      skills: ["Astro", "Tailwind CSS", "TypeScript", "GitHub Actions"],
-      github: "https://github.com/Mralai/Mralai.github.io",
-    },
-    {
-      name: "示例作品 · 终端工具箱 terminal-toolkit",
-      description:
-        "示例条目：用于演示「作品卡片」的展示效果。把你的真实作品按同样的结构填进 src/config.ts 即可，支持源码 / 在线体验 / 直接下载三种按钮。",
-      skills: ["Go", "CLI", "跨平台"],
-      isDemo: true,
-    },
-    {
-      name: "示例作品 · 效率桌面工具 deskgo",
-      description:
-        "示例条目：用于演示带下载按钮的作品卡片。正式作品请替换本条目，并把安装包放入 public/files/ 或发布到 GitHub Releases。",
-      skills: ["Electron", "React", "Node.js"],
-      isDemo: true,
-    },
-  ],
-
-  // ---------------- 下载中心 ----------------
+  // ---------------- 下载中心（大文件建议放 GitHub Releases 后填直链） ----------------
   downloads: [
     {
       name: "yxl-devkit-demo",
@@ -127,45 +64,6 @@ export const siteConfig = {
       size: "1 KB",
       url: `${pubBase}files/site-theme-demo.zip`,
       desc: "示例前端资源包。正式分发大文件（>50MB）建议使用 GitHub Releases 托管。",
-      isDemo: true,
-    },
-  ],
-
-  // ---------------- 经历 ----------------
-  experience: [
-    {
-      title: "全栈开发工程师（示例）",
-      company: "示例科技公司",
-      dateRange: "2023.06 – 至今",
-      bullets: [
-        "负责核心业务模块的前后端开发与维护（示例数据，请替换为真实经历）",
-        "参与服务架构优化，接口平均响应时间下降 40%（示例数据）",
-        "推动团队代码规范与 CI/CD 落地（示例数据）",
-      ],
-      isDemo: true,
-    },
-    {
-      title: "前端开发（示例）",
-      company: "示例工作室",
-      dateRange: "2021.09 – 2023.05",
-      bullets: [
-        "基于 React 技术栈开发多个业务系统（示例数据）",
-        "搭建组件库与主题规范，提升开发效率（示例数据）",
-      ],
-      isDemo: true,
-    },
-  ],
-
-  // ---------------- 教育 ----------------
-  education: [
-    {
-      school: "示例大学",
-      degree: "计算机科学与技术 · 本科",
-      dateRange: "2019 – 2023",
-      achievements: [
-        "系统学习数据结构、操作系统、计算机网络等核心课程（示例数据）",
-        "毕业设计：基于 Web 的某某管理系统（示例数据）",
-      ],
       isDemo: true,
     },
   ],

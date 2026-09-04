@@ -2,10 +2,6 @@
 import { siteConfig } from "../config";
 
 const accent = siteConfig.accentColor;
-const hasProjects = (siteConfig.projects?.length ?? 0) > 0;
-const hasDownloads = (siteConfig.downloads?.length ?? 0) > 0;
-const hasExperience = (siteConfig.experience?.length ?? 0) > 0;
-const hasEducation = (siteConfig.education?.length ?? 0) > 0;
 ---
 
 <header id="header" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
@@ -22,34 +18,16 @@ const hasEducation = (siteConfig.education?.length ?? 0) > 0;
             关于
           </a>
         </li>
-        {hasProjects && (
-          <li>
-            <a href="#projects" class="text-sm text-slate-300 transition-colors hover:text-white">
-              作品集
-            </a>
-          </li>
-        )}
-        {hasDownloads && (
-          <li>
-            <a href="#downloads" class="text-sm text-slate-300 transition-colors hover:text-white">
-              下载中心
-            </a>
-          </li>
-        )}
-        {hasExperience && (
-          <li>
-            <a href="#experience" class="text-sm text-slate-300 transition-colors hover:text-white">
-              经历
-            </a>
-          </li>
-        )}
-        {hasEducation && (
-          <li>
-            <a href="#education" class="text-sm text-slate-300 transition-colors hover:text-white">
-              教育
-            </a>
-          </li>
-        )}
+        <li>
+          <a href="#showcase" class="text-sm text-slate-300 transition-colors hover:text-white">
+            作品集
+          </a>
+        </li>
+        <li>
+          <a href="#downloads" class="text-sm text-slate-300 transition-colors hover:text-white">
+            下载中心
+          </a>
+        </li>
         {siteConfig.social.github && (
           <li>
             <a
@@ -109,26 +87,12 @@ const hasEducation = (siteConfig.education?.length ?? 0) > 0;
         <a href="#about" class="mobile-link rounded-lg px-4 py-2.5 text-sm text-slate-200 transition-colors hover:bg-white/5">
           关于
         </a>
-        {hasProjects && (
-          <a href="#projects" class="mobile-link rounded-lg px-4 py-2.5 text-sm text-slate-200 transition-colors hover:bg-white/5">
-            作品集
-          </a>
-        )}
-        {hasDownloads && (
-          <a href="#downloads" class="mobile-link rounded-lg px-4 py-2.5 text-sm text-slate-200 transition-colors hover:bg-white/5">
-            下载中心
-          </a>
-        )}
-        {hasExperience && (
-          <a href="#experience" class="mobile-link rounded-lg px-4 py-2.5 text-sm text-slate-200 transition-colors hover:bg-white/5">
-            经历
-          </a>
-        )}
-        {hasEducation && (
-          <a href="#education" class="mobile-link rounded-lg px-4 py-2.5 text-sm text-slate-200 transition-colors hover:bg-white/5">
-            教育
-          </a>
-        )}
+        <a href="#showcase" class="mobile-link rounded-lg px-4 py-2.5 text-sm text-slate-200 transition-colors hover:bg-white/5">
+          作品集
+        </a>
+        <a href="#downloads" class="mobile-link rounded-lg px-4 py-2.5 text-sm text-slate-200 transition-colors hover:bg-white/5">
+          下载中心
+        </a>
       </div>
     </div>
   </div>

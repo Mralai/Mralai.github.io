@@ -1,0 +1,649 @@
+---
+import { carouselWorks } from "../data/works";
+const pub = import.meta.env.BASE_URL;
+const works = carouselWorks;
+const n = works.length;
+const toUrl = (p?: string) =>
+  p && /^https?:\/\//.test(p) ? p : `${pub}${p}`;
+interface Props {
+  demoMode?: boolean;
+}
+const { demoMode = false } = Astro.props as Props;
+---
+
+<section id="showcase" class="scroll-mt-24 px-4 py-10 sm:px-6 sm:py-14">
+  <div class="mx-auto w-full max-w-[640px]">
+    <p class="text-center font-mono text-[11px] tracking-widest text-slate-500 sm:text-xs">
+      <span style={{ color: "var(--accent-color)" }}># showcase</span>
+      &nbsp;·&nbsp;滚轮 / 上下箭头 / 手指滑动切换，点击卡片下载资源包
+    </p>
+
+    <div
+      id="wdeck"
+      class="wdeck mt-8"
+      data-count={n}
+      data-base={pub}
+      data-demo={demoMode ? "1" : "0"}
+      aria-roledescription="轮播"
+    >
+      {works.map((w, i) => (
+        <article
+          class:list={["wcard", demoMode && "wcard-demo"]}
+          data-index={i}
+          data-name={w.name}
+          data-file={w.pack.file}
+          data-version={w.pack.version}
+          data-size={w.pack.size}
+          data-vsrc={w.media.type === "video" ? toUrl(w.media.src) : ""}
+          data-poster={w.media.type === "video" ? toUrl(w.media.poster) : ""}
+          tabindex={0}
+          role="button"
+          aria-label={`${w.name}，点击下载资源包 ${w.pack.file}`}
+        >
+          <div class="wmedia">
+            <img
+              class="wimg"
+              data-src={
+                w.media.type === "image"
+                  ? toUrl(w.media.src)
+                  : toUrl(w.media.poster ?? "")
+              }
+              alt=""
+              loading="lazy"
+              decoding="async"
+            />
+            {w.media.type === "video" && (
+              <>
+                <span class="wvloading hidden">视频加载中…</span>
+                <button
+                  class="wplay"
+                  type="button"
+                  data-play
+                  aria-label={`播放 ${w.name} 演示视频`}
+                >
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M8 5.5v13l11-6.5-11-6.5z" />
+                  </svg>
+                </button>
+              </>
+            )}
+          </div>
+
+          <div class="winfo">
+            <div class="flex items-center gap-2">
+              <h4 class="truncate text-[15px] font-semibold text-white sm:text-base">
+                {w.name}
+              </h4>
+              {demoMode && (
+                <span class="wchip" title="演示素材，可在 src/data/works.ts 中替换为你的真实作品">
+                  示例
+                </span>
+              )}
+            </div>
+            <p class="wdesc">{w.desc}</p>
+            <p class="wmeta">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-5-5l5 5 5-5M5 21h14"/></svg>
+              <span class="truncate">{w.pack.file}</span>
+              <span class="wdot-sep">·</span>v{w.pack.version}
+              <span class="wdot-sep">·</span>{w.pack.size}
+            </p>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="mt-7 flex items-center justify-center gap-5">
+      <button id="wprev" class="wnav" type="button" aria-label="上一个作品">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5m-7 7l7-7 7 7"/></svg>
+      </button>
+      <div id="wdots" class="flex items-center gap-2" role="tablist" aria-label="作品列表">
+        {works.map((w, i) => (
+          <button
+            class:list={["wdot", i === 0 && "wdot-on"]}
+            type="button"
+            data-dot={i}
+            aria-label={`查看第 ${i + 1} 个作品`}
+          ></button>
+        ))}
+      </div>
+      <button id="wnext" class="wnav" type="button" aria-label="下一个作品">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14m7-7l-7 7-7-7"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .wdeck {
+    position: relative;
+    height: clamp(400px, 62vh, 520px);
+    margin-inline: auto;
+    overflow: visible;
+    perspective: 1500px;
+    touch-action: none;
+    cursor: grab;
+  }
+  .wcard {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(92vw, 600px);
+    height: 86%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    border-radius: 18px;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    background:
+      radial-gradient(120% 90% at 15% 0%, rgba(56, 189, 248, 0.1), transparent 55%),
+      linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(7, 11, 20, 0.96));
+    box-shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.85);
+    overflow: hidden;
+    cursor: pointer;
+    visibility: hidden;
+    transform-style: preserve-3d;
+    will-change: transform, opacity;
+  }
+  .wcard:focus-visible {
+    outline: 2px solid var(--accent-color, #38bdf8);
+    outline-offset: 3px;
+  }
+  .wdeck.is-ready .wcard {
+    transition:
+      transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+      opacity 0.6s ease,
+      visibility 0s linear 0.6s;
+  }
+  .wmedia {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+    background:
+      linear-gradient(135deg, rgba(148, 163, 184, 0.08), rgba(148, 163, 184, 0.02)) ;
+  }
+  .wimg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+  }
+  .wimg.is-on {
+    opacity: 1;
+  }
+  .wplay {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: rgba(2, 6, 17, 0.62);
+    color: #fff;
+    backdrop-filter: blur(6px);
+    cursor: pointer;
+    z-index: 5;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .wplay:hover {
+    background: rgba(56, 189, 248, 0.75);
+    color: #041018;
+    transform: scale(1.06);
+  }
+  .wvideo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #04070d;
+    z-index: 4;
+  }
+  .wvloading {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 6;
+    font-size: 12px;
+    font-family: var(--font-mono, monospace);
+    color: #e2e8f0;
+    background: rgba(2, 6, 17, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 6px 12px;
+    border-radius: 999px;
+  }
+  .winfo {
+    padding: 12px 16px 14px;
+    border-top: 1px solid rgba(148, 163, 184, 0.12);
+  }
+  .wchip {
+    flex-shrink: 0;
+    font-family: var(--font-mono, monospace);
+    font-size: 10px;
+    color: #fcd34d;
+    border: 1px solid rgba(252, 211, 77, 0.45);
+    background: rgba(252, 211, 77, 0.08);
+    border-radius: 999px;
+    padding: 1px 8px;
+    letter-spacing: 0.05em;
+  }
+  .wdesc {
+    margin-top: 4px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #94a3b8;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .wmeta {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #64748b;
+  }
+  .wdot-sep {
+    color: #334155;
+  }
+  .wnav {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    background: rgba(255, 255, 255, 0.04);
+    color: #94a3b8;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .wnav:hover {
+    color: #fff;
+    border-color: rgba(56, 189, 248, 0.6);
+    background: rgba(56, 189, 248, 0.12);
+  }
+  .wdot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border-radius: 999px;
+    border: none;
+    background: rgba(148, 163, 184, 0.35);
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .wdot:hover {
+    background: rgba(148, 163, 184, 0.7);
+  }
+  .wdot-on {
+    width: 22px;
+    background: var(--accent-color, #38bdf8);
+  }
+  /* 手机：更浅的 3D 景深由 JS 控制角度；这里只收缩尺寸 */
+  @media (max-width: 640px) {
+    .wdeck {
+      perspective: 950px;
+    }
+  }
+  /* 视频正在播放时 ▶ 变暂停指示 */
+  .wplay.is-pause svg {
+    display: none;
+  }
+  .wplay.is-pause::after {
+    content: "";
+    width: 9px;
+    height: 14px;
+    border-left: 3px solid #fff;
+    border-right: 3px solid #fff;
+  }
+
+  /* ---------- toast 提示（JS 动态创建，放全局） ---------- */
+  .wtoast-root {
+    position: fixed;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    pointer-events: none;
+  }
+  .wtoast {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: min(88vw, 420px);
+    padding: 9px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.4;
+    font-family: var(--font-sans, sans-serif);
+    color: #e2e8f0;
+    background: rgba(9, 15, 28, 0.92);
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.7);
+    animation: wtoast-in 0.25s ease-out;
+  }
+  .wtoast-ok {
+    border-color: rgba(74, 222, 128, 0.45);
+  }
+  .wtoast-err {
+    border-color: rgba(248, 113, 113, 0.55);
+    background: rgba(30, 9, 16, 0.94);
+  }
+  .wtoast-load .wspin {
+    width: 13px;
+    height: 13px;
+    border-radius: 999px;
+    border: 2px solid rgba(56, 189, 248, 0.3);
+    border-top-color: var(--accent-color, #38bdf8);
+    animation: wspin 0.7s linear infinite;
+  }
+  @keyframes wspin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes wtoast-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .wtoast.out {
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+</style>
+
+<script>
+  const deck = document.getElementById("wdeck");
+  if (!deck) throw new Error("wdeck missing");
+  const base = deck.dataset.base ?? "/";
+  const n = Number(deck.dataset.count || 0);
+  const cards = Array.from(deck.querySelectorAll(".wcard"));
+  const dots = Array.from(document.querySelectorAll("#wdots .wdot"));
+  const prevBtn = document.getElementById("wprev");
+  const nextBtn = document.getElementById("wnext");
+
+  const coarse =
+    window.matchMedia("(pointer: coarse)").matches ||
+    window.innerWidth <= 640;
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const rotDeg = reduced ? 0 : coarse ? 6 : 14;
+
+  let cur = 0;
+  let locked = false;
+
+  function rel(i: number) {
+    let r = ((i - cur + n) % n + n) % n;
+    if (r > n / 2) r -= n;
+    return r;
+  }
+
+  function layout(animate: boolean) {
+    if (!animate) deck?.classList.remove("is-ready");
+    const h = deck?.clientHeight || 440;
+    // 为上下溢出露出的相邻卡片预留可视留白，避免压住上下内容
+    deck.style.marginTop = `${Math.round(h * 0.17)}px`;
+    deck.style.marginBottom = `${Math.round(h * 0.24)}px`;
+    const gap = Math.round(h * 0.34);
+    for (const card of cards) {
+      const i = Number(card.dataset.index);
+      const r = rel(i);
+      const abs = Math.min(Math.abs(r), 3);
+      const far = abs >= 2;
+      const scale = far ? 0.86 : 1 - abs * 0.055;
+      const op = abs === 0 ? 1 : abs === 1 ? 0.45 : 0;
+      card.style.transform = `translate3d(-50%, calc(-50% + ${r * gap}px), 0) rotateX(${r * rotDeg}deg) scale(${scale})`;
+      card.style.opacity = String(op);
+      card.style.zIndex = String(60 - abs);
+      card.style.visibility = far ? "hidden" : "visible";
+      card.style.pointerEvents = far ? "none" : "auto";
+      // 懒加载：只有进入中心或相邻位置才真正加载图片
+      if (abs <= 1) {
+        const img = card.querySelector<HTMLImageElement>(".wimg");
+        if (img && img.dataset.src && !img.src) {
+          img.src = img.dataset.src;
+          img.addEventListener("load", () => img.classList.add("is-on"), {
+            once: true,
+          });
+          if (img.complete) img.classList.add("is-on");
+        }
+      }
+    }
+    dots.forEach((d, i) => {
+      const on = i === cur;
+      d.classList.toggle("wdot-on", on);
+      d.setAttribute("aria-current", on ? "true" : "false");
+    });
+    requestAnimationFrame(() => {
+      if (animate) deck?.classList.add("is-ready");
+    });
+  }
+
+  function go(dir: number) {
+    if (locked || n < 2) return;
+    cur = (cur + dir + n) % n;
+    locked = true;
+    layout(false);
+    window.setTimeout(() => (locked = false), 480);
+  }
+  function jump(i: number) {
+    cur = (i + n) % n;
+    layout(true);
+  }
+
+  /* ---------- toast ---------- */
+  let toastRoot: HTMLDivElement | null = null;
+  function root() {
+    if (!toastRoot) {
+      toastRoot = document.createElement("div");
+      toastRoot.className = "wtoast-root";
+      document.body.append(toastRoot);
+    }
+    return toastRoot;
+  }
+  function toast(msg: string, type: "ok" | "err" | "load" = "ok") {
+    const el = document.createElement("div");
+    el.className = `wtoast wtoast-${type}`;
+    if (type === "load") {
+      const sp = document.createElement("span");
+      sp.className = "wspin";
+      el.append(sp);
+    }
+    el.append(document.createTextNode(msg));
+    root().append(el);
+    if (type !== "load") {
+      const life = type === "err" ? 4200 : 2600;
+      window.setTimeout(() => {
+        el.classList.add("out");
+        window.setTimeout(() => el.remove(), 350);
+      }, life);
+    }
+    return el;
+  }
+  function dismiss(el: HTMLDivElement) {
+    el.classList.add("out");
+    window.setTimeout(() => el.remove(), 320);
+  }
+
+  /* ---------- 视频：点击播放按钮后才创建 <video> 并加载（懒加载） ---------- */
+  function toggleVideo(card: HTMLElement) {
+    const btn = card.querySelector<HTMLButtonElement>("[data-play]");
+    const media = card.querySelector<HTMLElement>(".wmedia");
+    const loading = card.querySelector<HTMLElement>(".wvloading");
+    let video = card.querySelector<HTMLVideoElement>("video");
+    if (!video && media && card.dataset.vsrc) {
+      video = document.createElement("video");
+      video.muted = true;
+      video.playsInline = true;
+      video.loop = true;
+      video.preload = "none";
+      const s = document.createElement("source");
+      s.src = card.dataset.vsrc;
+      video.append(s);
+      video.className = "wvideo";
+      media.append(video);
+      video.addEventListener(
+        "canplay",
+        () => {
+          loading?.classList.add("hidden");
+          video?.play().catch(() => undefined);
+        },
+        { once: true }
+      );
+      video.addEventListener(
+        "error",
+        () => {
+          loading?.classList.add("hidden");
+          toast("视频加载失败，请检查网络", "err");
+        },
+        { once: true }
+      );
+    }
+    if (!video) return;
+    loading?.classList.remove("hidden");
+    if (video.paused) {
+      cards.forEach((c) => {
+        const v = c.querySelector<HTMLVideoElement>("video");
+        if (v && v !== video && !v.paused) v.pause();
+      });
+      document
+        .querySelectorAll(".wplay.is-pause")
+        .forEach((b) => b.classList.remove("is-pause"));
+      btn?.classList.add("is-pause");
+      video.play().catch(() => {
+        loading?.classList.add("hidden");
+        toast("视频加载失败，请检查网络", "err");
+      });
+    } else {
+      video.pause();
+      btn?.classList.remove("is-pause");
+      loading?.classList.add("hidden");
+    }
+  }
+
+  /* ---------- 下载：fetch -> blob -> 触发浏览器下载 ---------- */
+  async function download(card: HTMLElement) {
+    const file = card.dataset.file;
+    if (!file) return;
+    const remote = /^https?:\/\//.test(file);
+    const url = remote ? file : `${base}${file}`;
+    const name = card.dataset.name || file;
+    const loader = toast(`正在下载 ${name} …`, "load");
+    try {
+      if (remote) {
+        window.open(url, "_blank", "noopener");
+        dismiss(loader);
+        return;
+      }
+      const ctrl = new AbortController();
+      const timer = window.setTimeout(() => ctrl.abort(), 45000);
+      const res = await fetch(url, { signal: ctrl.signal });
+      window.clearTimeout(timer);
+      if (!res.ok) throw new Error("http " + res.status);
+      const blob = await res.blob();
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = file.split("/").pop() || "download";
+      document.body.append(a);
+      a.click();
+      a.remove();
+      window.setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+      dismiss(loader);
+      toast(`下载开始：${a.download || file}`);
+    } catch {
+      dismiss(loader);
+      toast("下载失败：网络异常或文件不存在，请稍后重试", "err");
+    }
+  }
+
+  /* ---------- 输入事件 ---------- */
+  let startY = 0;
+  let dragged = false;
+
+  deck.addEventListener("wheel", (e) => {
+    if (Math.abs(e.deltaY) < 10) return;
+    e.preventDefault();
+    go(e.deltaY > 0 ? 1 : -1);
+  }, { passive: false });
+
+  deck.addEventListener("touchstart", (e) => {
+    dragged = false;
+    startY = e.touches[0]?.clientY ?? 0;
+  }, { passive: true });
+  deck.addEventListener("touchmove", (e) => {
+    const y = e.touches[0]?.clientY ?? startY;
+    if (Math.abs(y - startY) > 12) dragged = true;
+  }, { passive: true });
+  deck.addEventListener("touchend", (e) => {
+    const y = e.changedTouches[0]?.clientY ?? startY;
+    const dy = y - startY;
+    if (Math.abs(dy) > 45) go(dy > 0 ? -1 : 1);
+  }, { passive: true });
+
+  deck.addEventListener("click", (e) => {
+    const t = e.target as HTMLElement;
+    const playBtn = t.closest<HTMLElement>("[data-play]");
+    if (playBtn) {
+      e.stopPropagation();
+      const card = playBtn.closest<HTMLElement>(".wcard");
+      if (card) toggleVideo(card);
+      return;
+    }
+    if (dragged) return;
+    const card = t.closest<HTMLElement>(".wcard");
+    if (card && card.style.visibility !== "hidden") {
+      jump(Number(card.dataset.index));
+      download(card);
+    }
+  });
+
+  deck.addEventListener("keydown", (e) => {
+    const card = (e.target as HTMLElement).closest<HTMLElement>(".wcard");
+    if (!card) return;
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      download(card);
+    } else if (e.key === "ArrowUp") {
+      go(-1);
+    } else if (e.key === "ArrowDown") {
+      go(1);
+    }
+  });
+
+  prevBtn?.addEventListener("click", () => go(-1));
+  nextBtn?.addEventListener("click", () => go(1));
+  dots.forEach((d) =>
+    d.addEventListener("click", () => jump(Number((d as HTMLElement).dataset.dot)))
+  );
+
+  let resizeT = 0;
+  window.addEventListener("resize", () => {
+    window.clearTimeout(resizeT);
+    resizeT = window.setTimeout(() => layout(false), 120);
+  });
+
+  layout(false);
+  requestAnimationFrame(() => deck.classList.add("is-ready"));
+</script>
