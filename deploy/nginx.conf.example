@@ -1,0 +1,40 @@
+# ============================================================
+# Nginx 部署示例（云服务器 / 香港免备案服务器）
+# 使用前替换两处：
+#   1) server_name 你的域名;
+#   2) root 指向上传后的 dist 目录（本地 npm run build 产物）
+# 适用：CentOS / Ubuntu + Nginx
+# ============================================================
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name your-domain.com www.your-domain.com;
+
+    # 站点文件（把 D:\ALnet\portfolio\dist 的内容上传到服务器此目录）
+    root /var/www/portfolio;
+    index index.html;
+
+    # 静态资源缓存
+    location /_astro/ {
+        expires 30d;
+        add_header Cache-Control "public, immutable";
+    }
+
+    location /files/ {
+        add_header Content-Disposition "attachment";
+    }
+
+    # SPA/静态站 404 页面
+    error_page 404 /404.html;
+
+    # 常见静态文件
+    location ~* \.(html|css|js|svg|png|jpg|jpeg|webp|woff2?|zip|txt)$ {
+        try_files $uri =404;
+    }
+}
+
+# HTTPS（域名解析生效后，安装 certbot 执行：
+#   apt install certbot python3-certbot-nginx
+#   certbot --nginx -d your-domain.com -d www.your-domain.com
+# 会在此文件上方自动生成 443 server 块并开启自动续期）

@@ -1,0 +1,162 @@
+---
+import { siteConfig } from "../config";
+const accent = siteConfig.accentColor;
+const s = siteConfig.social;
+---
+
+<div
+  id="hero"
+  class="relative isolate overflow-hidden bg-[#060a13]"
+  style={`--accent-color: ${accent}`}
+>
+  <!-- 环境光晕 -->
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute -top-48 -left-40 size-[560px] rounded-full opacity-15 blur-[120px]"
+    style={{ background: accent }}
+  ></div>
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute -bottom-56 -right-40 size-[520px] rounded-full bg-violet-600 opacity-10 blur-[130px]"
+  ></div>
+
+  <!-- 网格与代码符号点缀 -->
+  <svg
+    aria-hidden="true"
+    class="absolute inset-0 size-full [mask-image:radial-gradient(90%_90%_at_70%_10%,black,transparent_75%)]"
+  >
+    <defs>
+      <pattern id="hero-grid" width="52" height="52" patternUnits="userSpaceOnUse">
+        <path
+          d="M52 0H0V52"
+          fill="none"
+          stroke="rgba(148,163,184,0.08)"
+          stroke-width="1"
+        />
+      </pattern>
+      <pattern id="hero-symbols" width="420" height="420" patternUnits="userSpaceOnUse">
+        <text x="40" y="60" fill={accent} font-family="monospace" font-size="20" opacity="0.14" transform="rotate(-12)">&lt;/&gt;</text>
+        <text x="180" y="130" fill={accent} font-family="monospace" font-size="18" opacity="0.12" transform="rotate(8)">{ }</text>
+        <text x="330" y="80" fill={accent} font-family="monospace" font-size="20" opacity="0.14" transform="rotate(10)">=&gt;</text>
+        <text x="120" y="250" fill={accent} font-family="monospace" font-size="18" opacity="0.12" transform="rotate(-8)">[]</text>
+        <text x="300" y="300" fill={accent} font-family="monospace" font-size="20" opacity="0.14" transform="rotate(6)">::</text>
+        <text x="60" y="380" fill={accent} font-family="monospace" font-size="18" opacity="0.12" transform="rotate(12)">++</text>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#hero-symbols)" />
+    <rect width="100%" height="100%" fill="url(#hero-grid)" />
+  </svg>
+
+  <!-- 主内容 -->
+  <div
+    class="relative z-10 mx-auto flex min-h-[92vh] w-full max-w-7xl items-center px-6 py-28 sm:px-8 md:py-32"
+  >
+    <div class="w-full max-w-4xl">
+      <p class="animate-fade-in font-mono text-sm sm:text-base" style={{ color: accent }}>
+        ~/portfolio $ whoami
+      </p>
+      <h2 class="mt-6 animate-fade-in animation-delay-200 text-xl font-semibold text-slate-300 sm:text-2xl">
+        你好，我是 👋
+      </h2>
+      <h1
+        class="mt-3 animate-fade-in animation-delay-400 text-5xl font-bold tracking-tight text-white sm:text-6xl md:text-7xl"
+      >
+        <span style={{ color: accent }}>{siteConfig.name}</span>
+      </h1>
+      <p class="mt-6 animate-fade-in animation-delay-400 font-mono text-base text-slate-400 sm:text-lg">
+        &gt; console.log(&quot;{siteConfig.title}&quot;);
+      </p>
+      <p class="mt-4 max-w-2xl animate-fade-in animation-delay-600 text-base leading-relaxed text-slate-400 sm:text-lg">
+        {siteConfig.heroTagline}
+      </p>
+
+      <div class="mt-10 flex animate-fade-in animation-delay-600 flex-wrap items-center gap-4">
+        <a
+          href="#projects"
+          class="rounded-lg px-6 py-3 text-sm font-semibold text-[#041018] transition hover:brightness-110"
+          style={`background-color:${accent}; box-shadow:0 0 28px ${accent}55`}
+        >
+          浏览作品集 →
+        </a>
+        <a
+          href="#downloads"
+          class="rounded-lg border border-white/15 px-6 py-3 text-sm font-medium text-slate-200 transition hover:border-white/35 hover:bg-white/5"
+        >
+          前往下载中心
+        </a>
+      </div>
+
+      <!-- 社交链接 -->
+      <div class="mt-12 flex animate-fade-in animation-delay-600 items-center gap-x-7">
+        {
+          s.email && (
+            <a
+              href={`mailto:${s.email}`}
+              aria-label="Email"
+              class="text-slate-400 transition-colors duration-300 hover:text-[var(--accent-color)]"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" />
+                <path d="M3 7l9 6l9 -6" />
+              </svg>
+            </a>
+          )
+        }
+        {
+          s.github && (
+            <a
+              href={s.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+              class="text-slate-400 transition-colors duration-300 hover:text-[var(--accent-color)]"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+              </svg>
+            </a>
+          )
+        }
+        {
+          s.twitter && (
+            <a
+              href={s.twitter}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Twitter / X"
+              class="text-slate-400 transition-colors duration-300 hover:text-[var(--accent-color)]"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
+                <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
+              </svg>
+            </a>
+          )
+        }
+        {
+          s.linkedin && (
+            <a
+              href={s.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              class="text-slate-400 transition-colors duration-300 hover:text-[var(--accent-color)]"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M8 11v5" />
+                <path d="M8 8v.01" />
+                <path d="M12 16v-5" />
+                <path d="M16 16v-3a2 2 0 1 0 -4 0" />
+                <path d="M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4z" />
+              </svg>
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</div>

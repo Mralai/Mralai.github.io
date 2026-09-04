@@ -1,0 +1,152 @@
+---
+import { siteConfig } from "../config";
+const accent = siteConfig.accentColor;
+const projects = siteConfig.projects ?? [];
+const hasProjects = projects.length > 0;
+const btnGhost =
+  "inline-flex items-center gap-2 rounded-lg border border-white/15 px-4 py-2 text-sm font-medium text-slate-200 transition-colors hover:border-white/35 hover:bg-white/5";
+const chipDemo =
+  "inline-flex items-center rounded-full border border-amber-300/40 bg-amber-400/10 px-2.5 py-0.5 font-mono text-[11px] text-amber-300";
+---
+
+{
+  hasProjects && (
+    <section id="projects" class="px-6 sm:px-8 py-16 sm:py-20 md:py-24">
+      <div class="mx-auto max-w-7xl">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+          <div class="lg:col-span-4">
+            <p class="font-mono text-sm tracking-widest" style={{ color: accent }}>
+              # projects
+            </p>
+            <h2 class="mt-3 text-4xl sm:text-5xl font-bold tracking-tight text-white">
+              作品集
+            </h2>
+            <div
+              class="mt-4 w-[75px] h-[5px] rounded-full"
+              style={`background-color: ${accent}; box-shadow: 0 0 12px ${accent}`}
+            ></div>
+            <p class="mt-6 leading-relaxed text-slate-400">
+              正在开发与维护的项目：源码、在线体验与安装包均可直接获取。
+            </p>
+          </div>
+
+          <div class="lg:col-span-8">
+            <div class="space-y-6">
+              {projects.map((project, index) => (
+                <article
+                  class="card-glow group relative rounded-2xl border border-white/10 bg-white/5 p-5 sm:p-7 transition-all duration-300 hover:-translate-y-1 hover:bg-white/[0.07] hover:border-white/20"
+                >
+                  <div class="flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                      <span class="font-mono text-sm" style={{ color: accent }}>
+                        0{index + 1}
+                      </span>
+                      {project.isDemo && <span class={chipDemo}>示例数据</span>}
+                    </div>
+                  </div>
+
+                  <h3 class="mt-3 text-xl sm:text-2xl font-bold text-white">
+                    {project.name}
+                  </h3>
+                  <p class="mt-3 text-sm sm:text-base leading-relaxed text-slate-400">
+                    {project.description}
+                  </p>
+
+                  {project.skills?.length > 0 && (
+                    <div class="mt-5 flex flex-wrap gap-2">
+                      {project.skills.map((skill) => (
+                        <span class="rounded-md border border-white/10 bg-white/5 px-2.5 py-1 font-mono text-xs text-slate-300">
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  <div class="mt-6 flex flex-wrap gap-3">
+                    {project.github && (
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class={btnGhost}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="h-4 w-4"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+                        </svg>
+                        GitHub 源码
+                      </a>
+                    )}
+                    {project.demo && (
+                      <a
+                        href={project.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class={btnGhost}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="h-4 w-4"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                          <path d="M12 7v5l3 3" />
+                        </svg>
+                        在线体验
+                      </a>
+                    )}
+                    {project.download && (
+                      <a
+                        href={project.download}
+                        class="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold text-[#041018] transition hover:brightness-110"
+                        style={{ backgroundColor: accent }}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="h-4 w-4"
+                        >
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path d="M12 3v12" />
+                          <path d="M7 11l5 5l5 -5" />
+                          <path d="M5 21h14" />
+                        </svg>
+                        下载 {project.download.split("/").pop()}
+                      </a>
+                    )}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}

@@ -1,0 +1,2 @@
+﻿<# 静态资源示例包 #>
+下载中心将 index.html / style.css 打包为 site-theme-demo.zip
