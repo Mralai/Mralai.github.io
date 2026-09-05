@@ -74,3 +74,7 @@ portfolio/
 - 图标：[Tabler Icons](https://tabler.io/icons)
 - 字体：IBM Plex Mono（[@fontsource/ibm-plex-mono](https://www.npmjs.com/package/@fontsource/ibm-plex-mono)，OFL 许可）
 - 本项目整体以 **MIT** 许可发布，详见 `LICENSE.md`（含上游版权声明）。
+
+## Projects
+
+- [来可 · 本地 Agent 应用开源（office-agent-local）](/office-agent-local/) — 来可助手 / 来可浏览器 / 办公 AI 工具（净化公开快照）
