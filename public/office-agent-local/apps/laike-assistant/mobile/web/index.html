@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1a5cff">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>来可助手 · 手机入口</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="icon" href="/icon-192.png">
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+background:linear-gradient(165deg,#10224d 0%,#0a1128 60%,#060b1a 100%);color:#e8eefc;min-height:100vh;display:flex;flex-direction:column}
+.top{padding:26px 20px 8px;text-align:center}
+.logo{width:84px;height:84px;border-radius:22px;background:linear-gradient(135deg,#1a5cff,#0d47c9);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:44px;font-weight:800;color:#fff;box-shadow:0 8px 26px rgba(26,92,255,.35)}
+h1{margin:0;font-size:21px} .sub{color:#8fa3d0;font-size:13px;margin-top:4px}
+.card{margin:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:14px}
+label{font-size:12px;color:#9fb1d8;display:block;margin:4px 0}
+input,button{width:100%;border:0;border-radius:10px;font-size:15px;padding:12px 12px;margin-top:8px}
+input{background:rgba(255,255,255,.08);color:#eaf1ff;border:1px solid rgba(255,255,255,.2)}
+.btn{background:linear-gradient(135deg,#1a5cff,#0d47c9);color:#fff;font-weight:700;cursor:pointer}
+.btn.ghost{background:rgba(255,255,255,.07);color:#cfe0ff;border:1px solid rgba(255,255,255,.18)}
+.st{margin-top:10px;font-size:13px;min-height:20px}
+.ok{color:#5bd08a}.bad{color:#ff8a80}
+.qr{text-align:center;padding:8px}
+.hint{font-size:12px;color:#7f92ba;line-height:1.9;margin:6px 2px}
+.foot{margin-top:auto;text-align:center;font-size:11px;color:#5d6f96;padding:14px}
+</style>
+</head>
+<body>
+<div class="top"><div class="logo">来</div>
+ <h1>来可助手</h1><div class="sub">Laike Assistant · 手机入口 · 连接你的电脑 DSH</div></div>
+
+<div class="card">
+ <label>电脑地址（同一 Wi-Fi，来自电脑上 serve 的输出）</label>
+ <input id="host" type="text" placeholder="http://192.168.x.x:3086">
+ <button class="btn" onclick="go()">连接 · 打开来可助手（DSH）</button>
+ <button class="btn ghost" onclick="checkNow()">检查连接状态</button>
+ <div class="st" id="st"></div>
+</div>
+
+<div class="card">
+ <div class="hint">
+  <b>如何开始</b><br>
+  1. 电脑上运行：<code style="font-size:11px;word-break:break-all">laike_runner serve --port 3085 --listen-port 3086</code><br>
+  2. 它会打印一个 <b>lan_url</b>（形如 http://192.168.x.x:3086）<br>
+  3. 把地址填到上面（会记住），点“连接”。<br>
+  4. 首次进入请在 DSH 里创建/选择工作区与“标准模式”后开始对话。
+ </div>
+</div>
+<div class="foot">来可 · 本地 DSH 手机入口 · 数据经局域网直达你的电脑，不经第三方</div>
+
+<script>
+var KEY='laike_host';
+(function(){var h=localStorage.getItem(KEY);if(h)document.getElementById('host').value=h;})();
+function host(){var v=document.getElementById('host').value.trim().replace(/\/+$/,'');return v||'http://127.0.0.1:3085';}
+function setSt(t,cls){var s=document.getElementById('st');s.className='st '+(cls||'');s.textContent=t;}
+function go(){var v=document.getElementById('host').value.trim();if(!v){setSt('请先填写电脑地址','bad');return;}
+ localStorage.setItem(KEY,v);setSt('正在连接 '+v+' …');
+ fetch(v+'/',{mode:'no-cors'}).then(function(){setSt('已打开；如未跳转请手动打开该地址','ok');window.open(v,'_blank');})
+ .catch(function(){setSt('无法连接：请确认电脑已运行 serve 且手机与电脑同一网络','bad');});}
+function checkNow(){var v=host();setSt('检查中…');
+ fetch(v+'/',{mode:'no-cors'}).then(function(){setSt('可连接 ✓（'+v+'）','ok');})
+ .catch(function(){setSt('不可达 ✗ 请核对地址/网络','bad');});}
+</script>
+</body>
+</html>
