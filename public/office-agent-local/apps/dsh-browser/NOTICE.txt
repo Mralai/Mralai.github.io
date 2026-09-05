@@ -1,0 +1,35 @@
+DSH Browser（来可浏览器 / Laike Browser）— NOTICE（第三方与上游声明）
+==================================================================
+
+产品名：来可浏览器（根品牌「来可」，见库级 docs/14-来可品牌与命名规范.md）。
+本发行基于开源项目 Thorium（Chromium fork）二次集成：
+
+  Thorium — Copyright (c) 2021-2026 Alexander Frick <alex313031> (BSD 3-Clause)
+  本构建（M152.0.7977.55，Windows AVX2 便携 / Android arm64 APK）来源于社区维护分支：
+  https://github.com/gz83/thorium  (releases: M152.0.7977.55)
+  上游主仓库：https://github.com/Alex313031/Thorium （源码 + 构建脚本 + 许可文件 LICENSE.md）
+
+BSD 3-Clause License（上游全文见 thorium/LICENSE.md 或 https://github.com/Alex313031/Thorium）
+Copyright (c) 2021-2026, Alexander Frick. All rights reserved.
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+  1. Redistributions of source code must retain the above copyright notice, this
+     list of conditions and the following disclaimer.
+  2. Redistributions in binary form must reproduce the above copyright notice,
+     this list of conditions and the following disclaimer in the documentation
+     and/or other materials provided with the distribution.
+  3. Neither the name of the copyright holder nor the names of its contributors
+     may be used to endorse or promote products derived from this software
+     without specific prior written permission.
+（免责条款全文见 LICENSE 原文。）
+
+Chromium 上游（BSD-3-Clause）与第三方组件：Chromium 组件的完整第三方许可与版权
+声明遵循 Chromium 项目的 LICENSE/NOTICE 惯例，构建时由
+chrome://credits 与源码树 third_party/ 提供；发行前请保留随构建生成的
+credits（chrome://credits → 打印另存）或以源码树为准随包附上。
+
+其他说明：
+- 内含 WidevineCdm 二进制（其自带 LICENSE 于 runtime 版本目录内，按其条款使用）。
+- 本项目（dsh-browser 集成层/控制桥）由使用者开发，以 Apache-2.0 随工程源码发布。
+- 与 DeepSeek Harness（DSH）的捆绑仅为界面宿主与自动化目标，与 DSH 官方无关联，
+  禁止以官方名义宣传。
